@@ -17,16 +17,4 @@
 @dynamic age;
 @dynamic gender;
 
-- (instancetype)initWithActorName:(NSString *)actor andPassengerName:(NSString *)passenger andGender:(NSString *)gender andAge:(NSNumber *)age andSeatNumber:(NSNumber *)seat{
-    
-    self = [super init];
-    self.actor = actor;
-    self.passenger = passenger;
-    self.gender = gender;
-    self.age = age;
-    self.seat = seat;
-
-    return self;
-}
-
 @end

@@ -120,11 +120,12 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <action selector="addCharacter:" destination="vXZ-lx-hvc" eventType="editingDidEnd" id="MW1-tf-sYo"/>
-                            </connections>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="9vG-xi-I9J"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="9vG-xi-I9J">
+                            <connections>
+                                <action selector="addCharacter:" destination="vXZ-lx-hvc" id="2rQ-Uv-WZC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="4oV-6y-Jz0" id="aI6-ey-8eR"/>
@@ -567,7 +568,7 @@
                         <outlet property="imageView" destination="ByM-Kb-KHG" id="E8J-fw-5qA"/>
                         <outlet property="passengerLabel" destination="6PB-oy-A7h" id="ig2-eq-hrH"/>
                         <outlet property="seatLabel" destination="N9I-7w-cOS" id="tLz-VJ-ZUR"/>
-                        <outlet property="updateCharacterDataButton" destination="PXd-jh-y1z" id="jD9-N1-7Ln"/>
+                        <outlet property="updateCharacterDataButton" destination="PXd-jh-y1z" id="4v5-oa-MCq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zr3-d1-2Mp" userLabel="First Responder" sceneMemberID="firstResponder"/>

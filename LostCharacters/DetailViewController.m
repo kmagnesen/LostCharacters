@@ -7,11 +7,19 @@
 //
 
 #import "DetailViewController.h"
-#import "ListViewController.h"
+#import "AppDelegate.h"
+#import "Character.h"
+#import <UIKit/UIKit.h>
 
 @interface DetailViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UIButton *updateCharacterDataButton;
+
+
+
+@property NSManagedObjectContext *moc;
+//@property (nonatomic) NSArray *characters;
+//@property NSIndexPath *indexPath;
 
 @end
 
@@ -19,6 +27,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    self.moc = appDelegate.managedObjectContext;
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
@@ -37,16 +48,39 @@
     [self.changeSeatTextField setEnabled:NO];
     self.changeSeatTextField.alpha = 0;
 
-    self.actorLabel.text = self.character.actor;
-    self.passengerLabel.text = self.character.passenger;
-    self.genderLabel.text = self.character.gender;
-    self.ageLabel.text = self.character.age.stringValue;
-    self.seatLabel.text = self.character.seat.stringValue;
+    [self loadCharacters];
+
+}
+
+- (NSURL *)documentDirectory {
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+}
+
+- (void) setCharacters:(NSArray *)characters {
+    _characters = characters;
+    [self.actorLabel reloadInputViews];
+    [self.passengerLabel reloadInputViews];
+    [self.genderLabel reloadInputViews];
+    [self.ageLabel reloadInputViews];
+    [self.seatLabel reloadInputViews];
+}
+
+- (void)loadCharacters {
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Character"];
+    self.characters = [self.moc executeFetchRequest:request error:nil];
 }
 
 - (IBAction)onUpdateCharacterButtonTapped:(UIButton *)sender {
-    Character *character = [[Character alloc] initWithActorName:self.actorLabel.text andPassengerName:self.passengerLabel.text andGender:self.genderLabel.text andAge:[NSNumber numberWithLong:(long)self.ageLabel.text.longLongValue] andSeatNumber:[NSNumber numberWithLong:(long)self.seatLabel.text.longLongValue]];
-    [self.delegate updateCharacter:character atRow:self.indexPath];
+    Character *character = [NSEntityDescription insertNewObjectForEntityForName:@"Character" inManagedObjectContext:self.moc];
+
+    character.actor = self.actorLabel.text;
+    character.passenger = self.passengerLabel.text;
+    character.gender = self.genderLabel.text;
+    [character.age.stringValue isEqualToString:self.ageLabel.text ];
+    [character.seat.stringValue isEqualToString:self.seatLabel.text];
+
+    [self.moc save:nil];
+    [self loadCharacters];
 }
 
 - (void)setEditing:(BOOL)flag animated:(BOOL)animated
@@ -75,11 +109,11 @@
         self.seatLabel.alpha = 0;
         self.updateCharacterDataButton.alpha = 0;
 
-        self.changeActorTextField.text = self.character.actor;
-        self.changePassengerTextField.text = self.character.passenger;
-        self.changeGenderTextField.text = self.character.gender;
-        self.changeAgeTextField.text = self.character.age.stringValue;
-        self.changeSeatTextField.text = self.character.seat.stringValue;
+        self.changeActorTextField.text = self.actorLabel.text;
+        self.changePassengerTextField.text = self.passengerLabel.text;
+        self.changeGenderTextField.text = self.genderLabel.text;
+        [self.changeAgeTextField.text isEqualToString:self.ageLabel.text];
+        [self.changeSeatTextField.text isEqualToString:self.seatLabel.text];
 
     } else {
 
@@ -116,12 +150,12 @@
         [self.changeGenderTextField resignFirstResponder];
         [self.changeAgeTextField resignFirstResponder];
         [self.changeSeatTextField resignFirstResponder];
-
-        self.character.actor = self.actorLabel.text;
-        self.character.passenger = self.passengerLabel.text;
-        self.character.gender = self.genderLabel.text;
-        [self.character.age.stringValue isEqualToString: self.ageLabel.text];
-        [self.character.seat.stringValue isEqualToString: self.seatLabel.text];
+//
+//        self.actorLabel = self.actorLabel.text;
+//        self.character.passenger = self.passengerLabel.text;
+//        self.character.gender = self.genderLabel.text;
+//        [self.character.age.stringValue isEqualToString: self.ageLabel.text];
+//        [self.character.seat.stringValue isEqualToString: self.seatLabel.text];
 
     }
 }

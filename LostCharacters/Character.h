@@ -10,9 +10,7 @@
 #import <CoreData/CoreData.h>
 
 
-@interface Character : NSManagedObject <NSObject>
-
-- (instancetype)initWithActorName:(NSString *)actor andPassengerName:(NSString *)passenger andGender:(NSString *)gender andAge:(NSNumber *)age andSeatNumber:(NSNumber *)seat;
+@interface Character : NSManagedObject
 
 @property (nonatomic, retain) NSString * passenger;
 @property (nonatomic, retain) NSString * actor;

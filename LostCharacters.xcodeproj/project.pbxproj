@@ -18,6 +18,7 @@
 		F91D5F4C1A781D13000CE1CD /* lost.plist in Resources */ = {isa = PBXBuildFile; fileRef = F91D5F4B1A781D13000CE1CD /* lost.plist */; };
 		F91D5F4F1A78384E000CE1CD /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = F91D5F4E1A78384E000CE1CD /* Character.m */; };
 		F91D5F521A785794000CE1CD /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F91D5F511A785794000CE1CD /* DetailViewController.m */; };
+		F91D5F581A7940B8000CE1CD /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F91D5F571A7940B8000CE1CD /* CustomTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		F91D5F4E1A78384E000CE1CD /* Character.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Character.m; sourceTree = "<group>"; };
 		F91D5F501A785794000CE1CD /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F91D5F511A785794000CE1CD /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		F91D5F561A7940B8000CE1CD /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		F91D5F571A7940B8000CE1CD /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,8 @@
 				F91D5F221A781C3C000CE1CD /* AppDelegate.m */,
 				F91D5F271A781C3C000CE1CD /* ListViewController.h */,
 				F91D5F281A781C3C000CE1CD /* ListViewController.m */,
+				F91D5F561A7940B8000CE1CD /* CustomTableViewCell.h */,
+				F91D5F571A7940B8000CE1CD /* CustomTableViewCell.m */,
 				F91D5F4D1A78384E000CE1CD /* Character.h */,
 				F91D5F4E1A78384E000CE1CD /* Character.m */,
 				F91D5F2A1A781C3C000CE1CD /* Main.storyboard */,
@@ -237,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F91D5F4F1A78384E000CE1CD /* Character.m in Sources */,
+				F91D5F581A7940B8000CE1CD /* CustomTableViewCell.m in Sources */,
 				F91D5F261A781C3C000CE1CD /* LostCharacters.xcdatamodeld in Sources */,
 				F91D5F231A781C3C000CE1CD /* AppDelegate.m in Sources */,
 				F91D5F291A781C3C000CE1CD /* ListViewController.m in Sources */,

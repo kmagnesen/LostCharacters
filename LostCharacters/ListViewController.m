@@ -12,12 +12,10 @@
 #import "DetailViewController.h"
 #import <CoreData/CoreData.h>
 
-#define userDefaultsLastSavedKey @"Last Saved Key"
-
-@interface ListViewController () <UITableViewDataSource, UITableViewDelegate, UpdateCharacterDelegate, UIAlertViewDelegate>
+@interface ListViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property NSManagedObjectContext *moc;
-@property (nonatomic) NSArray *characters;
+@property (strong, nonatomic) NSArray *characters;
 @property NSIndexPath *indexPath;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITextField *textField;
@@ -31,6 +29,8 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.moc = appDelegate.managedObjectContext;
 
+    [self loadCharacters];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"dataImported"]) {
         [self populateCoreData];
@@ -38,7 +38,6 @@
         [defaults setObject:@"OK" forKey:@"dataImported"];
         [defaults synchronize];
     }
-    [self loadCharacters];
 }
 
 - (NSURL *)documentDirectory {
@@ -59,7 +58,7 @@
 
 #pragma mark ACTIONS
 
-- (IBAction)addCharacter:(UITextField *)sender {
+- (IBAction)addCharacter:(UIBarButtonItem *)sender {
     Character *character = [NSEntityDescription insertNewObjectForEntityForName:@"Character" inManagedObjectContext:self.moc];
 
     character.actor = self.textField.text;
@@ -67,6 +66,7 @@
     [self.moc save:nil];
     [self loadCharacters];
     self.textField.text = nil;
+    [self resignFirstResponder];
 }
 - (IBAction)onEditButtonTapped:(UIBarButtonItem *)sender {
     if (self.tableView.editing)
@@ -111,29 +111,29 @@
     {
         self.indexPath = indexPath;
 
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold Up!" message:@"Are you sure you want to delete this item.  This can't be undone" delegate:self cancelButtonTitle:@"Delete" otherButtonTitles:@"Cancel", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold Up!" message:@"Are you sure you want to delete this character?  This cannot be undone" delegate:self cancelButtonTitle:@"Delete" otherButtonTitles:@"Cancel", nil];
         [alert show];
     }
 }
 
 
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if(buttonIndex == 0)//OK button pressed
-//    {
-//        [self.characters removeObjectAtIndex:self.indexPath.row];
-//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else {
-//
-//        [UIView transitionWithView:self.tableView
-//                          duration:0.5f
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^(void) {
-//                            [self.tableView reloadData];
-//                        } completion:NULL];
-//    }
-//    
-//}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)//OK button pressed
+    {
+//        [self.characters removeObserver:self.moc forKeyPath:self.characters.indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+
+        [UIView transitionWithView:self.tableView
+                          duration:0.5f
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^(void) {
+                            [self.tableView reloadData];
+                        } completion:NULL];
+    }
+    
+}
 
 #pragma mark POPULATE CORE DATA
 
@@ -145,6 +145,9 @@
         Character *character = [NSEntityDescription insertNewObjectForEntityForName:@"Character"inManagedObjectContext:self.moc];
         character.actor = dictionary[@"actor"];
         character.passenger = dictionary[@"passenger"];
+        character.gender = dictionary[@"gender"];
+        character.age = dictionary[@"age"];
+        character.seat = dictionary[@"seat"];
     }
     [self.moc save:nil];
 }
@@ -178,11 +181,21 @@
     Character *characterTapped = [self.characters objectAtIndexedSubscript:selectedIndexPath.row];
 
     DetailViewController *vc = segue.destinationViewController;
-    vc.character = characterTapped;
-    vc.indexPath = selectedIndexPath;
-
-    [(DetailViewController *)segue.destinationViewController setDelegate:self];
+    [vc.characters isEqual: characterTapped];
+    [vc.indexPath isEqual: selectedIndexPath];
 }
 
+- (IBAction)unwindFromDetailViewController:(UIStoryboardSegue *)segue {
+    DetailViewController *vc = segue.sourceViewController;
+    Character *character = [NSEntityDescription insertNewObjectForEntityForName:@"Character" inManagedObjectContext:self.moc];
 
+//    character.actor = segue.text;
+//    character.passenger = segue.text;
+//    character.gender = segue.text;
+    character.age = [NSNumber numberWithInt:(int) segue];
+    character.seat = [NSNumber numberWithInt:(int) segue];
+
+    [self.moc save:nil];
+    [self loadCharacters];
+}
 @end
